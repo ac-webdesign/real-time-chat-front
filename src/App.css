@@ -155,7 +155,6 @@ button:hover {
 
   .chat-container {
     flex-direction: column;
-    height: 90vh;
   }
 
   .online-users {

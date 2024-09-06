@@ -3,7 +3,8 @@ import io from 'socket.io-client';
 import './App.css';
 
 // Connect to the backend socket server
-const socket = io.connect('http://localhost:5000');
+
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'https://real-time-chat-qgos.onrender.com/');
 
 function App() {
   const [message, setMessage] = useState('');

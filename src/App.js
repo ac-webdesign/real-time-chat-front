@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import './App.css';
+import SplashScreen from './SplashScreen';
+import UsernameInput from './UsernameInput';
 
-// Connect to the backend socket server
-
-const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000');
+// const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000');
+const socket = io.connect('http://localhost:5000');
 
 function App() {
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
+  const [showSplash, setShowSplash] = useState(true);
+  const [username, setUsername] = useState('');
+
 
   // Send message to the backend
   const sendMessage = () => {
-    if (message !== '') {
+    if (message !== '' && socket.connected) {
       const messageData = {
         content: message,
         id: socket.id,
+        username: username,
       };
 
       socket.emit('send_message', messageData);
@@ -23,20 +28,36 @@ function App() {
     }
   };
 
-  
+  // Handle splash screen
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3000); // Show splash screen for 3 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Receive messages from the backend
   useEffect(() => {
     // Listen for receiving messages
     socket.on('receive_message', (data) => {
       setMessageList((list) => [...list, data]);
-  });
-  
+    });
+
     // Cleanup function to avoid duplicate listeners
     return () => {
        socket.off('receive_message');
     };
   }, []);
-  
+
+
+  if (showSplash) {
+    return <SplashScreen />; // Show the splash screen
+  }
+
+  if (username === '') {
+    return <UsernameInput setUsername={setUsername} />; // Show the username input
+  }
 
   return (
     <div className="App">
@@ -48,7 +69,7 @@ function App() {
               key={index}
               className={`message ${msg.id === socket.id ? 'you' : 'other'}`}
             >
-              <p>{msg.content}</p>
+              <p><strong>{msg.username}: </strong>{msg.content}</p>
             </div>
           ))}
         </div>

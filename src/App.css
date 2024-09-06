@@ -20,6 +20,7 @@ h1 {
 .chat-box {
   height: 400px;
   overflow-y: scroll;
+  overflow-x: hidden;
   background-color: white;
   border: 1px solid #ccc;
   padding: 15px;
@@ -68,4 +69,80 @@ button {
 
 button:hover {
   background-color: #218838;
+}
+
+/* SplashScreen.css */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+.splash-screen h1 {
+  font-size: 2em;
+  margin: 0;
+}
+
+.splash-screen p {
+  font-size: 1.2em;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #000;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.username-input-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.username-input-container h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.username-input-container input {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.username-input-container button {
+  margin: 10px 0;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.username-input-container button:hover {
+  background-color: #ddd;
 }

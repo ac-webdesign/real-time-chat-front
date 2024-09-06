@@ -4,7 +4,7 @@ import './App.css';
 
 // Connect to the backend socket server
 
-const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'https://real-time-chat-qgos.onrender.com/');
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000');
 
 function App() {
   const [message, setMessage] = useState('');
@@ -23,6 +23,7 @@ function App() {
     }
   };
 
+  
   // Receive messages from the backend
   useEffect(() => {
     // Listen for receiving messages

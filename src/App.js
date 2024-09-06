@@ -5,8 +5,8 @@ import SplashScreen from './SplashScreen';
 import UsernameInput from './UsernameInput';
 import OnlineUsers from './OnlineUsers';
 
-// const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000');
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000');
+// const socket = io.connect('http://localhost:5000');
 
 function App() {
   const [message, setMessage] = useState('');

@@ -1,148 +1,327 @@
 .App {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
 }
 
 h1 {
-  color: #333;
+  text-align: center;
+  color: #1877f2;
+  margin: 20px 0;
+  font-size: 24px;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  padding: 0 20px;
 }
 
 .chat-container {
-  width: 500px;
-  max-width: 100%;
+  display: flex;
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+
+.online-users {
+  width: 180px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  overflow-y: auto;
+  border-right: 1px solid #e1e4e8;
+}
+
+.online-users h3 {
+  color: #24292e;
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.online-users ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.online-users li {
+  font-size: 13px;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+}
+
+.user-status {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #28a745;
+  margin-right: 8px;
+}
+
+.chat-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%; /* Ensure it takes full height */
 }
 
 .chat-box {
-  height: 400px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin-bottom: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  min-height: 0; /* This is crucial for allowing the flex item to shrink */
+  margin-bottom: 10px; /* Add some space between messages and input */
 }
 
 .message {
   margin: 5px 0;
-  padding: 10px;
-  border-radius: 10px;
-  width: fit-content;
+  padding: 10px 15px;
+  border-radius: 18px;
   max-width: 70%;
+  word-wrap: break-word;
 }
 
 .you {
-  background-color: #d1ffd1;
-  margin-left: auto;
+  align-self: flex-end;
+  background-color: #0084ff;
+  color: white;
 }
 
 .other {
-  background-color: #e1e1ff;
-  margin-right: auto;
+  align-self: flex-start;
+  background-color: #e4e6eb;
+  color: black;
 }
 
 .input-container {
   display: flex;
-  justify-content: space-between;
+  padding: 12px 8px;
+  background-color: #f0f2f5;
+  border-top: 1px solid #e4e6eb; /* Add a subtle border */
 }
 
 input[type="text"] {
   flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
 }
 
 button {
   padding: 10px 20px;
   margin-left: 10px;
-  background-color: #28a745;
+  background-color: #0084ff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #218838;
+  background-color: #0066cc;
 }
 
-/* SplashScreen.css */
-.splash-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f0f0f0;
+.timestamp {
+  font-size: 0.8em;
+  color: #65676b;
+  margin-left: 10px;
+}
+
+/* Mobile-friendly styles */
+@media (max-width: 768px) {
+  .App {
+    height: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  .main-container {
+    padding: 0 10px;
+  }
+
+  .chat-container {
+    flex-direction: column;
+    height: 90vh;
+  }
+
+  .online-users {
+    width: 100%;
+    max-height: 120px;
+    padding: 10px;
+    border-right: none;
+    border-bottom: 1px solid #e1e4e8;
+  }
+
+  .online-users h3 {
+    font-size: 13px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
+
+  .online-users li {
+    font-size: 12px;
+    padding: 4px 0;
+  }
+
+  .chat-content {
+    height: calc(100vh - 200px); /* Adjust based on your header and online users height */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-box {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0; /* Allow shrinking on mobile too */
+  }
+
+  .input-container {
+    padding: 10px;
+  }
+
+  input[type="text"] {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+}
+
+/* Username Input Styles */
+.username-input-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure it appears above other content */
+  height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.username-input-container h2 {
+  color: #1877f2;
+  margin-bottom: 20px;
+}
+
+.username-input-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.username-input-container input {
+  width: 250px;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.username-input-container button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #0084ff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.username-input-container button:hover {
+  background-color: #0066cc;
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 768px) {
+  .username-input-container form {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .username-input-container input {
+    width: 100%;
+  }
+}
+
+/* ... rest of the existing styles ... */
+
+.message.system {
+  align-self: center;
+  background-color: #e4e6eb;
+  line-height: 0.8;
+  color: #65676b;
+  font-style: italic;
+  border-radius: 10px;
+  max-width: 80%;
+  padding: 0 10px;
+}
+
+/* ... rest of the existing styles ... */
+
+/* SplashScreen styles */
+.splash-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #f0f2f5;
+  background-color: #1877f2;
+}
+
+.splash-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  color: #f0f2f5;
 }
 
 .splash-screen h1 {
-  font-size: 2em;
-  margin: 0;
+  color: #f0f2f5;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .splash-screen p {
-  font-size: 1.2em;
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #000;
+  border: 4px solid rgba(24, 119, 242, 0.3);
+  border-top: 4px solid #f0f2f5;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-.username-input-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.username-input-container h2 {
-  margin: 0;
-  padding: 0;
-  font-size: 1.2em;
-  text-align: center;
-}
-
-.username-input-container input {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.username-input-container button {
-  margin: 10px 0;
-  padding: 10px 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.username-input-container button:hover {
-  background-color: #ddd;
-}
+/* ... rest of the existing styles ... */

@@ -3,15 +3,17 @@ import io from 'socket.io-client';
 import './App.css';
 import SplashScreen from './SplashScreen';
 import UsernameInput from './UsernameInput';
+import OnlineUsers from './OnlineUsers';
 
-const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000');
+// const socket = io.connect(process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000');
+const socket = io.connect('http://localhost:5000');
 
 function App() {
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
   const [showSplash, setShowSplash] = useState(true);
   const [username, setUsername] = useState('');
-
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   // Send message to the backend
   const sendMessage = () => {
@@ -20,6 +22,7 @@ function App() {
         content: message,
         id: socket.id,
         username: username,
+        timestamp: new Date().toISOString(),
       };
 
       socket.emit('send_message', messageData);
@@ -27,60 +30,78 @@ function App() {
     }
   };
 
-  // Handle splash screen
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 3000); // Show splash screen for 3 seconds
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Receive messages from the backend
   useEffect(() => {
-    // Listen for receiving messages
-    socket.on('receive_message', (data) => {
-      setMessageList((list) => [...list, data]);
-    });
+    if (username !== '') {
+      socket.emit('user_connected', username);
+    }
+  }, [username]);
 
-    // Cleanup function to avoid duplicate listeners
+  useEffect(() => {
+    const receiveMessageHandler = (data) => {
+      setMessageList((list) => [...list, data]);
+    };
+
+    const updateOnlineUsersHandler = (users) => {
+      setOnlineUsers(users);
+    };
+
+    socket.on('receive_message', receiveMessageHandler);
+    socket.on('update_online_users', updateOnlineUsersHandler);
+
     return () => {
-       socket.off('receive_message');
+      socket.off('receive_message', receiveMessageHandler);
+      socket.off('update_online_users', updateOnlineUsersHandler);
     };
   }, []);
 
-
   if (showSplash) {
-    return <SplashScreen />; // Show the splash screen
+    return <SplashScreen />;
   }
 
   if (username === '') {
-    return <UsernameInput setUsername={setUsername} />; // Show the username input
+    return <UsernameInput setUsername={setUsername} />;
   }
 
   return (
     <div className="App">
       <h1>Real-Time Chat</h1>
-      <div className="chat-container">
-        <div className="chat-box">
-          {messageList.map((msg, index) => (
-            <div
-              key={index}
-              className={`message ${msg.id === socket.id ? 'you' : 'other'}`}
-            >
-              <p><strong>{msg.username}: </strong>{msg.content}</p>
+      <div className="main-container">
+        <div className="chat-container">
+          <OnlineUsers users={onlineUsers} />
+          <div className="chat-content">
+            <div className="chat-box">
+              {messageList.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`message ${msg.id === 'system' ? 'system' : msg.id === socket.id ? 'you' : 'other'}`}
+                >
+                  <p>
+                    {msg.id !== 'system' && <strong>{msg.username}: </strong>}
+                    {msg.content}
+                    <span className="timestamp">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="input-container">
-          <input
-            type="text"
-            value={message}
-            placeholder="Type a message..."
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-          />
-          <button onClick={sendMessage}>Send</button>
+            <div className="input-container">
+              <input
+                type="text"
+                value={message}
+                placeholder="Type a message..."
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+              />
+              <button onClick={sendMessage}>Send</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -2,24 +2,24 @@
 import React, { useState } from 'react';
 
 function UsernameInput({ setUsername }) {
-  const [inputValue, setInputValue] = useState('');
+  const [inputUsername, setInputUsername] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (inputValue.trim()) {
-      setUsername(inputValue); // Pass the username to the parent App component
+    if (inputUsername.trim() !== '') {
+      setUsername(inputUsername);
     }
   };
 
   return (
     <div className="username-input-container">
+      <h2>Enter your username</h2>
       <form onSubmit={handleSubmit}>
-        <h2>Enter your username</h2>
         <input
           type="text"
-          value={inputValue}
+          value={inputUsername}
+          onChange={(e) => setInputUsername(e.target.value)}
           placeholder="Username"
-          onChange={(e) => setInputValue(e.target.value)}
         />
         <button type="submit">Join Chat</button>
       </form>
